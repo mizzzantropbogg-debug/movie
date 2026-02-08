@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Для тебя ❤️</title>
 
-  <!-- Красивый шрифт (можешь поменять позже) -->
+  <!-- Красивые шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Marck+Script&display=swap" rel="stylesheet">
@@ -17,8 +17,6 @@
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
       --shadow: 0 24px 80px rgba(0,0,0,.55);
-      --glass: rgba(0,0,0,.34);
-      --glass2: rgba(255,255,255,.10);
       --border: rgba(255,255,255,.16);
       --r: 22px;
     }
@@ -36,7 +34,7 @@
     .bg{
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: -3;
       background: #0b0b12;
     }
     .bg::after{
@@ -46,7 +44,7 @@
         radial-gradient(1200px 800px at 20% 10%, rgba(170,90,255,.18), transparent 55%),
         radial-gradient(1000px 700px at 85% 25%, rgba(90,210,255,.14), transparent 55%),
         radial-gradient(900px 700px at 50% 95%, rgba(255,90,130,.14), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.70));
+        linear-gradient(180deg, rgba(0,0,0,.46), rgba(0,0,0,.78));
       z-index: 2;
       pointer-events: none;
     }
@@ -55,27 +53,36 @@
       position:absolute; inset:-5%;
       background-size: cover;
       background-position: center;
-      filter: blur(10px) saturate(1.05);
+      filter: blur(10px) saturate(1.06);
       transform: scale(1.08);
       opacity: 0;
-      transition: opacity 1.6s ease;
+      transition: opacity 1.7s ease;
       z-index: 1;
     }
     .slide.active{ opacity: 1; }
+
+    /* ===== Stars / particles canvas ===== */
+    #stars{
+      position: fixed;
+      inset: 0;
+      z-index: -2; /* поверх фото, под контентом */
+      pointer-events: none;
+      opacity: 0.85;
+    }
 
     /* ===== Layout ===== */
     .wrap{
       min-height: 100%;
       display: grid;
       place-items: start center;
-      padding: 22px 16px 40px;
+      padding: 22px 16px 44px;
     }
 
     .paper{
       width: min(760px, 100%);
       border-radius: var(--r);
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.46));
+      background: linear-gradient(180deg, rgba(0,0,0,.26), rgba(0,0,0,.50));
       box-shadow: var(--shadow);
       overflow: hidden;
       backdrop-filter: blur(8px);
@@ -90,7 +97,7 @@
       justify-content: space-between;
       gap: 12px;
       border-bottom: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
+      background: rgba(0,0,0,.20);
     }
 
     .chip{
@@ -120,23 +127,56 @@
       font-family: "Marck Script", cursive;
       font-size: clamp(30px, 5.2vw, 46px);
       line-height: 1.05;
-      margin: 6px 0 8px;
+      margin: 6px 0 10px;
       letter-spacing: .2px;
+      opacity: 0;
+      transform: translateY(12px);
+      filter: blur(6px);
+      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+    }
+    .title.show{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
-    .letter{
+    /* Письмо построчно */
+    .letterLines{
       margin: 0;
-      color: rgba(255,255,255,.84);
+      padding: 0;
+      list-style: none;
+    }
+    .line{
+      color: rgba(255,255,255,.86);
       font-weight: 300;
       font-size: 16px;
       line-height: 1.75;
       white-space: pre-wrap;
+
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(6px);
+      transition: opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease;
+    }
+    .line.show{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
     .separator{
       height: 1px;
       background: rgba(255,255,255,.12);
       margin: 18px 0;
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(6px);
+      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+    }
+    .separator.show{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
     /* ===== CTA box ===== */
@@ -147,6 +187,16 @@
       padding: 14px;
       display: grid;
       gap: 10px;
+
+      opacity: 0;
+      transform: translateY(12px);
+      filter: blur(6px);
+      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+    }
+    .cta.show{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
     .ctaRow{
@@ -181,7 +231,7 @@
       color: #0b0b12;
       background: rgba(255,255,255,.92);
       box-shadow: 0 14px 34px rgba(0,0,0,0.35);
-      transition: transform .08s ease, opacity .2s ease;
+      transition: transform .10s ease, opacity .2s ease;
     }
     .btn:active{ transform: translateY(1px) scale(.99); }
 
@@ -190,7 +240,18 @@
       color: rgba(255,255,255,.55);
       font-size: 12.5px;
       text-align: center;
+
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(6px);
+      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
     }
+    .footer.show{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
     .pill{
       display:inline-block;
       padding: 8px 10px;
@@ -206,42 +267,44 @@
 </head>
 
 <body>
-  <!-- Background slideshow layers -->
+  <!-- Background images -->
   <div class="bg" aria-hidden="true">
     <div class="slide active" id="slideA"></div>
     <div class="slide" id="slideB"></div>
   </div>
 
+  <!-- Stars -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+
   <div class="wrap">
     <div class="paper">
-      <div class="topbar">
+      <div class="topbar" id="topbar">
         <div class="chip"><span class="dot"></span> Для тебя</div>
         <div class="chip">❤️</div>
       </div>
 
       <div class="content">
-        <div class="title">Любимая…</div>
+        <div class="title" id="title">Любимая…</div>
 
-        <!-- ТУТ ТЫ ПОТОМ ЗАМЕНИШЬ ТЕКСТ ПОД СЕБЯ -->
-        <p class="letter" id="loveText">
-Я долго думал, как сказать это так, чтобы не “громко”, а по-настоящему.
+        <!-- ТЕКСТ: меняй как хочешь. Каждая новая строка = отдельное появление -->
+        <ul class="letterLines" id="letter">
+          <li class="line">Я долго думал, как сказать это так, чтобы не “громко”, а по-настоящему.</li>
+          <li class="line"></li>
+          <li class="line">Ты — человек, рядом с которым у меня внутри становится тише.</li>
+          <li class="line">С тобой даже обычные дни кажутся важными, потому что в них есть ты.</li>
+          <li class="line"></li>
+          <li class="line">Мне нравится, как ты смеёшься, как смотришь, как молчишь.</li>
+          <li class="line">Мне нравится, что ты есть. И что ты — рядом.</li>
+          <li class="line"></li>
+          <li class="line">Я не обещаю идеальности.</li>
+          <li class="line">Но обещаю беречь тебя в мелочах: в словах, в поступках, в выборе быть рядом.</li>
+          <li class="line"></li>
+          <li class="line">И я очень хочу, чтобы ты увидела один момент… именно с него всё начинается.</li>
+        </ul>
 
-Ты — человек, рядом с которым у меня внутри становится тише.
-С тобой даже обычные дни кажутся важными, потому что в них есть ты.
+        <div class="separator" id="sep"></div>
 
-Мне нравится, как ты смеёшься, как смотришь, как молчишь.
-Мне нравится, что ты есть. И что ты — рядом.
-
-Я не обещаю идеальности.
-Но обещаю беречь тебя в мелочах: в словах, в поступках, в выборе быть рядом.
-
-И я очень хочу, чтобы ты увидела один момент… именно с него всё начинается.
-        </p>
-
-        <div class="separator"></div>
-
-        <!-- ОКОШКО С ПЕРЕХОДОМ НА ФИЛЬМ -->
-        <div class="cta">
+        <div class="cta" id="cta">
           <div class="ctaRow">
             <div>
               <div class="ctaTitle">Тот самый момент — 1:23:08</div>
@@ -258,7 +321,7 @@
         </div>
       </div>
 
-      <div class="footer">
+      <div class="footer" id="footer">
         <span class="pill">Это маленькое признание — от меня к тебе ❤️</span>
       </div>
     </div>
@@ -269,19 +332,18 @@
     const startTime = 4988; // 1:23:08
     const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}&time=${startTime}#t=${startTime}`;
 
-    // Поставь сюда столько фото, сколько загрузишь в /photos/
-    // Просто добавляй "photos/4.jpg", "photos/5.jpg" и т.д.
+    // ✅ ФОТО ИЗ КОРНЯ РЕПОЗИТОРИЯ — пропиши реальные имена файлов
     const photos = [
       "1.jpg",
       "2.jpg",
       "3.jpg"
+      // можно добавлять: "4.jpg", "IMG_1234.JPG", ...
     ];
 
-    // ===== Фон-слайдшоу =====
+    // ===== Background slideshow =====
     const slideA = document.getElementById("slideA");
     const slideB = document.getElementById("slideB");
 
-    // Предзагрузка
     photos.forEach(src => { const img = new Image(); img.src = src; });
 
     let idx = 0;
@@ -291,14 +353,11 @@
       el.style.backgroundImage = `url('${src}')`;
     }
 
-    // Стартовый фон
     setBg(slideA, photos[0] || "");
     setBg(slideB, photos[1] || photos[0] || "");
 
-    // Каждые 7 секунд плавная смена
     setInterval(() => {
       if (photos.length < 2) return;
-
       idx = (idx + 1) % photos.length;
       const nextSrc = photos[idx];
 
@@ -312,11 +371,124 @@
       showingA = !showingA;
     }, 7000);
 
-    // ===== Кнопка фильма =====
+    // ===== Sequential text reveal =====
+    const title = document.getElementById("title");
+    const lines = Array.from(document.querySelectorAll("#letter .line"));
+    const sep = document.getElementById("sep");
+    const cta = document.getElementById("cta");
+    const footer = document.getElementById("footer");
+
+    function revealSequence(){
+      // Заголовок
+      setTimeout(() => title.classList.add("show"), 250);
+
+      // Строки по очереди
+      const baseDelay = 650;        // когда стартуем показ строк
+      const step = 220;             // интервал между строками
+      lines.forEach((el, i) => {
+        // пустые строки тоже показываем, но быстрее
+        const isEmpty = (el.textContent || "").trim().length === 0;
+        const extra = isEmpty ? -120 : 0;
+        setTimeout(() => el.classList.add("show"), baseDelay + i * step + extra);
+      });
+
+      // Разделитель, CTA и футер — после текста
+      const totalTime = baseDelay + lines.length * step + 400;
+      setTimeout(() => sep.classList.add("show"), totalTime);
+      setTimeout(() => cta.classList.add("show"), totalTime + 220);
+      setTimeout(() => footer.classList.add("show"), totalTime + 420);
+    }
+    revealSequence();
+
+    // ===== Button =====
     document.getElementById("playBtn").addEventListener("click", () => {
-      // На iPhone стабильнее открывать по клику в новой вкладке
       window.open(filmUrl, "_blank");
     });
+
+    // ===== Stars / particles =====
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    function resize(){
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+
+    // “звёзды” + “частицы”
+    const stars = [];
+    const STAR_COUNT = Math.min(140, Math.floor((W()*H()) / 9000)); // адаптивно
+    const twinkleSpeed = 0.008;
+
+    function rand(min, max){ return min + Math.random() * (max - min); }
+
+    for(let i=0;i<STAR_COUNT;i++){
+      stars.push({
+        x: rand(0, W()),
+        y: rand(0, H()),
+        r: rand(0.6, 1.8),
+        a: rand(0.10, 0.70),
+        t: rand(0, Math.PI*2),
+        s: rand(0.08, 0.30),          // скорость “дрейфа”
+        vx: rand(-0.06, 0.06),
+        vy: rand(-0.10, 0.10)
+      });
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,W(),H());
+
+      // лёгкая дымка
+      const grad = ctx.createRadialGradient(W()*0.5, H()*0.2, 10, W()*0.5, H()*0.2, Math.max(W(),H())*0.9);
+      grad.addColorStop(0, "rgba(255,255,255,0.035)");
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0,0,W(),H());
+
+      // звёзды
+      for(const st of stars){
+        st.t += twinkleSpeed * (0.7 + st.r);
+        st.x += st.vx * st.s;
+        st.y += st.vy * st.s;
+
+        // wrap
+        if(st.x < -10) st.x = W()+10;
+        if(st.x > W()+10) st.x = -10;
+        if(st.y < -10) st.y = H()+10;
+        if(st.y > H()+10) st.y = -10;
+
+        const tw = (Math.sin(st.t) + 1) * 0.5; // 0..1
+        const alpha = st.a * (0.55 + tw * 0.65);
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.arc(st.x, st.y, st.r * (0.85 + tw*0.45), 0, Math.PI*2);
+        ctx.fill();
+
+        // редкие “искры”
+        if(tw > 0.98 && st.r > 1.2){
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${alpha*0.45})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(st.x - 6, st.y);
+          ctx.lineTo(st.x + 6, st.y);
+          ctx.moveTo(st.x, st.y - 6);
+          ctx.lineTo(st.x, st.y + 6);
+          ctx.stroke();
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 </body>
 </html>
