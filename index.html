@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Для тебя ❤️</title>
 
-  <!-- Красивые шрифты -->
+  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Marck+Script&display=swap" rel="stylesheet">
@@ -14,481 +14,304 @@
 
   <style>
     :root{
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
+      --text: rgba(255,255,255,.95);
+      --muted: rgba(255,255,255,.75);
+      --border: rgba(255,255,255,.18);
       --shadow: 0 24px 80px rgba(0,0,0,.55);
-      --border: rgba(255,255,255,.16);
       --r: 22px;
     }
-    *{ box-sizing: border-box; }
-    html, body { height: 100%; }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      color: var(--text);
-      font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #0b0b12;
-      overflow-x: hidden;
+      font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:#0b0b12;
+      overflow-x:hidden;
     }
 
-    /* ===== Background slideshow ===== */
+    /* ===== ФОН С ФОТО (ЧЁТКИЕ) ===== */
     .bg{
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background: #0b0b12;
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:#0b0b12;
     }
+    .slide{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transition:opacity 1.6s ease;
+      z-index:1;
+    }
+    .slide.active{ opacity:1; }
+
+    /* затемнение + виньетка для читаемости */
     .bg::after{
       content:"";
-      position:absolute; inset:0;
+      position:absolute;
+      inset:0;
       background:
-        radial-gradient(1200px 800px at 20% 10%, rgba(170,90,255,.18), transparent 55%),
-        radial-gradient(1000px 700px at 85% 25%, rgba(90,210,255,.14), transparent 55%),
-        radial-gradient(900px 700px at 50% 95%, rgba(255,90,130,.14), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.46), rgba(0,0,0,.78));
-      z-index: 2;
-      pointer-events: none;
+        radial-gradient(1200px 700px at 50% 20%, rgba(0,0,0,.15), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.65));
+      z-index:2;
+      pointer-events:none;
     }
 
-    .slide{
-      position:absolute; inset:-5%;
-      background-size: cover;
-      background-position: center;
-      filter: blur(10px) saturate(1.06);
-      transform: scale(1.08);
-      opacity: 0;
-      transition: opacity 1.7s ease;
-      z-index: 1;
-    }
-    .slide.active{ opacity: 1; }
-
-    /* ===== Stars / particles canvas ===== */
+    /* ===== ЗВЁЗДЫ ===== */
     #stars{
-      position: fixed;
-      inset: 0;
-      z-index: -2; /* поверх фото, под контентом */
-      pointer-events: none;
-      opacity: 0.85;
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      opacity:.8;
     }
 
-    /* ===== Layout ===== */
+    /* ===== КАРТОЧКА ===== */
     .wrap{
-      min-height: 100%;
-      display: grid;
-      place-items: start center;
-      padding: 22px 16px 44px;
+      min-height:100%;
+      display:grid;
+      place-items:start center;
+      padding:22px 16px 44px;
     }
-
     .paper{
-      width: min(760px, 100%);
-      border-radius: var(--r);
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(0,0,0,.26), rgba(0,0,0,.50));
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      position: relative;
+      width:min(760px,100%);
+      border-radius:var(--r);
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.42);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      overflow:hidden;
     }
 
     .topbar{
-      padding: 14px 16px;
+      padding:14px 16px;
       display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
+      justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.35);
     }
-
     .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.78);
-      font-size: 12.5px;
-      letter-spacing: .2px;
-    }
-    .dot{
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.65);
-      box-shadow: 0 0 18px rgba(255,255,255,.22);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      font-size:12.5px;
     }
 
-    .content{
-      padding: 18px 18px 16px;
-    }
+    .content{ padding:20px; }
 
     .title{
-      font-family: "Marck Script", cursive;
-      font-size: clamp(30px, 5.2vw, 46px);
-      line-height: 1.05;
-      margin: 6px 0 10px;
-      letter-spacing: .2px;
-      opacity: 0;
-      transform: translateY(12px);
-      filter: blur(6px);
-      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+      font-family:"Marck Script",cursive;
+      font-size:clamp(30px,5vw,46px);
+      margin:6px 0 12px;
+      opacity:0;
+      transform:translateY(14px);
+      filter:blur(6px);
+      transition:1s ease;
     }
-    .title.show{
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    .title.show{ opacity:1; transform:none; filter:none; }
 
-    /* Письмо построчно */
-    .letterLines{
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
     .line{
-      color: rgba(255,255,255,.86);
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 1.75;
-      white-space: pre-wrap;
+      font-size:16px;
+      line-height:1.75;
+      font-weight:300;
+      margin:0;
+      opacity:0;
+      transform:translateY(12px);
+      filter:blur(6px);
+      transition:1.1s ease;
+    }
+    .line.show{ opacity:1; transform:none; filter:none; }
 
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(6px);
-      transition: opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease;
-    }
-    .line.show{
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    .spacer{ height:12px; }
 
     .separator{
-      height: 1px;
-      background: rgba(255,255,255,.12);
-      margin: 18px 0;
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(6px);
-      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+      height:1px;
+      background:rgba(255,255,255,.18);
+      margin:20px 0;
+      opacity:0;
+      transition:1s ease;
     }
-    .separator.show{
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    .separator.show{ opacity:1; }
 
-    /* ===== CTA box ===== */
+    /* ===== CTA ===== */
     .cta{
-      border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border-radius: 18px;
-      padding: 14px;
-      display: grid;
-      gap: 10px;
-
-      opacity: 0;
-      transform: translateY(12px);
-      filter: blur(6px);
-      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.08);
+      opacity:0;
+      transform:translateY(14px);
+      filter:blur(6px);
+      transition:1s ease;
     }
-    .cta.show{
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
+    .cta.show{ opacity:1; transform:none; filter:none; }
 
-    .ctaRow{
-      display:flex;
-      align-items:flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .ctaTitle{
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-
+    .ctaTitle{ font-weight:700; }
     .ctaHint{
-      color: rgba(255,255,255,.66);
-      font-size: 12.8px;
-      line-height: 1.35;
-      text-align: right;
-      max-width: 56%;
+      font-size:12.8px;
+      color:rgba(255,255,255,.7);
+      margin-top:6px;
     }
 
     .btn{
-      appearance: none;
-      border: 0;
-      border-radius: 16px;
-      padding: 14px 16px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      color: #0b0b12;
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.35);
-      transition: transform .10s ease, opacity .2s ease;
+      margin-top:14px;
+      width:100%;
+      border:0;
+      border-radius:16px;
+      padding:14px;
+      font-size:16px;
+      font-weight:800;
+      background:rgba(255,255,255,.95);
+      color:#0b0b12;
+      cursor:pointer;
+      box-shadow:0 14px 34px rgba(0,0,0,.35);
+      position:relative;
     }
-    .btn:active{ transform: translateY(1px) scale(.99); }
+
+    /* СУПЕР-ПОДСВЕТКА */
+    @keyframes glow{
+      0%,100%{ box-shadow:0 14px 34px rgba(0,0,0,.35),0 0 0 rgba(255,255,255,0); }
+      50%{ box-shadow:0 18px 44px rgba(0,0,0,.45),0 0 28px rgba(255,255,255,.55); }
+    }
+    .btn.invite{ animation:glow 3.5s ease-in-out infinite; }
 
     .footer{
-      padding: 12px 18px 16px;
-      color: rgba(255,255,255,.55);
-      font-size: 12.5px;
-      text-align: center;
-
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(6px);
-      transition: opacity 1.0s ease, transform 1.0s ease, filter 1.0s ease;
+      text-align:center;
+      font-size:12.5px;
+      color:rgba(255,255,255,.6);
+      padding:14px;
+      opacity:0;
+      transition:1s ease;
     }
-    .footer.show{
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-
-    .pill{
-      display:inline-block;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-    }
-
-    @media (max-width: 420px){
-      .ctaHint{ max-width: 100%; text-align:left; }
-    }
+    .footer.show{ opacity:1; }
   </style>
 </head>
 
 <body>
-  <!-- Background images -->
-  <div class="bg" aria-hidden="true">
+  <div class="bg">
     <div class="slide active" id="slideA"></div>
     <div class="slide" id="slideB"></div>
   </div>
 
-  <!-- Stars -->
-  <canvas id="stars" aria-hidden="true"></canvas>
+  <canvas id="stars"></canvas>
 
   <div class="wrap">
     <div class="paper">
-      <div class="topbar" id="topbar">
-        <div class="chip"><span class="dot"></span> Для тебя</div>
+      <div class="topbar">
+        <div class="chip">Для тебя</div>
         <div class="chip">❤️</div>
       </div>
 
       <div class="content">
         <div class="title" id="title">Любимая…</div>
 
-        <!-- ТЕКСТ: меняй как хочешь. Каждая новая строка = отдельное появление -->
-        <ul class="letterLines" id="letter">
-          <li class="line">Я долго думал, как сказать это так, чтобы не “громко”, а по-настоящему.</li>
-          <li class="line"></li>
-          <li class="line">Ты — человек, рядом с которым у меня внутри становится тише.</li>
-          <li class="line">С тобой даже обычные дни кажутся важными, потому что в них есть ты.</li>
-          <li class="line"></li>
-          <li class="line">Мне нравится, как ты смеёшься, как смотришь, как молчишь.</li>
-          <li class="line">Мне нравится, что ты есть. И что ты — рядом.</li>
-          <li class="line"></li>
-          <li class="line">Я не обещаю идеальности.</li>
-          <li class="line">Но обещаю беречь тебя в мелочах: в словах, в поступках, в выборе быть рядом.</li>
-          <li class="line"></li>
-          <li class="line">И я очень хочу, чтобы ты увидела один момент… именно с него всё начинается.</li>
-        </ul>
+        <!-- ГОТОВЫЙ ТЕКСТ -->
+        <p class="line">Я долго думал, как сказать это так, чтобы не громко,</p>
+        <p class="line">не напоказ, а по-настоящему.</p>
+        <div class="spacer"></div>
+
+        <p class="line">Ты — самое лучшее, что со мной произошло.</p>
+        <p class="line">С тобой мир стал спокойнее, а я — счастливее.</p>
+        <div class="spacer"></div>
+
+        <p class="line">Мне нравится просыпаться с мыслью о тебе.</p>
+        <p class="line">Нравится, что рядом с тобой можно быть собой.</p>
+        <div class="spacer"></div>
+
+        <p class="line">Я не обещаю идеальности.</p>
+        <p class="line">Но обещаю выбирать тебя снова и снова.</p>
+        <div class="spacer"></div>
+
+        <p class="line">Я хочу сохранить этот момент.</p>
+        <p class="line">И очень хочу, чтобы ты увидела один кадр…</p>
+        <p class="line">Именно с него.</p>
 
         <div class="separator" id="sep"></div>
 
         <div class="cta" id="cta">
-          <div class="ctaRow">
-            <div>
-              <div class="ctaTitle">Тот самый момент — 1:23:08</div>
-              <div style="margin-top:6px;color:rgba(255,255,255,.66);font-size:12.8px;">
-                Нажми кнопку — откроется фильм
-              </div>
-            </div>
-            <div class="ctaHint">
-              На iPhone иногда открывается с начала — тогда просто перемотай на <b>1:23:08</b> 💛
-            </div>
+          <div class="ctaTitle">Тот самый момент — 1:23:08</div>
+          <div class="ctaHint">
+            Нажми кнопку — откроется фильм  
+            <br>Если начнётся с начала — просто перемотай на <b>1:23:08</b>
           </div>
-
           <button class="btn" id="playBtn">Открыть фильм</button>
         </div>
       </div>
 
       <div class="footer" id="footer">
-        <span class="pill">Это маленькое признание — от меня к тебе ❤️</span>
+        Это маленькое признание — от меня к тебе ❤️
       </div>
     </div>
   </div>
 
   <script>
-    // ===== Настройки =====
-    const startTime = 4988; // 1:23:08
-    const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}&time=${startTime}#t=${startTime}`;
+    const startTime = 4988;
+    const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}#t=${startTime}`;
 
-    // ✅ ФОТО ИЗ КОРНЯ РЕПОЗИТОРИЯ — пропиши реальные имена файлов
+    /* ===== ФОТО (лежат в корне репозитория) ===== */
     const photos = [
       "1.jpg",
       "2.jpg",
       "3.jpg"
-      // можно добавлять: "4.jpg", "IMG_1234.JPG", ...
     ];
 
-    // ===== Background slideshow =====
     const slideA = document.getElementById("slideA");
     const slideB = document.getElementById("slideB");
+    let idx = 0, showA = true;
 
-    photos.forEach(src => { const img = new Image(); img.src = src; });
+    function setBg(el, src){ el.style.backgroundImage = `url('${src}')`; }
+    setBg(slideA, photos[0]);
+    setBg(slideB, photos[1] || photos[0]);
 
-    let idx = 0;
-    let showingA = true;
-
-    function setBg(el, src){
-      el.style.backgroundImage = `url('${src}')`;
-    }
-
-    setBg(slideA, photos[0] || "");
-    setBg(slideB, photos[1] || photos[0] || "");
-
-    setInterval(() => {
-      if (photos.length < 2) return;
-      idx = (idx + 1) % photos.length;
-      const nextSrc = photos[idx];
-
-      const incoming = showingA ? slideB : slideA;
-      const outgoing = showingA ? slideA : slideB;
-
-      setBg(incoming, nextSrc);
+    setInterval(()=>{
+      if(photos.length < 2) return;
+      idx = (idx+1)%photos.length;
+      const incoming = showA ? slideB : slideA;
+      const outgoing = showA ? slideA : slideB;
+      setBg(incoming, photos[idx]);
       incoming.classList.add("active");
       outgoing.classList.remove("active");
-
-      showingA = !showingA;
+      showA = !showA;
     }, 7000);
 
-    // ===== Sequential text reveal =====
+    /* ===== ПОЯВЛЕНИЕ ТЕКСТА ===== */
     const title = document.getElementById("title");
-    const lines = Array.from(document.querySelectorAll("#letter .line"));
+    const lines = document.querySelectorAll(".line");
     const sep = document.getElementById("sep");
     const cta = document.getElementById("cta");
     const footer = document.getElementById("footer");
 
-    function revealSequence(){
-      // Заголовок
-      setTimeout(() => title.classList.add("show"), 250);
+    setTimeout(()=>title.classList.add("show"),300);
+    lines.forEach((l,i)=>setTimeout(()=>l.classList.add("show"),700+i*220));
 
-      // Строки по очереди
-      const baseDelay = 650;        // когда стартуем показ строк
-      const step = 220;             // интервал между строками
-      lines.forEach((el, i) => {
-        // пустые строки тоже показываем, но быстрее
-        const isEmpty = (el.textContent || "").trim().length === 0;
-        const extra = isEmpty ? -120 : 0;
-        setTimeout(() => el.classList.add("show"), baseDelay + i * step + extra);
-      });
+    const endTime = 700 + lines.length*220 + 400;
+    setTimeout(()=>sep.classList.add("show"), endTime);
+    setTimeout(()=>cta.classList.add("show"), endTime+200);
+    setTimeout(()=>{
+      footer.classList.add("show");
+      document.getElementById("playBtn").classList.add("invite");
+    }, endTime+600);
 
-      // Разделитель, CTA и футер — после текста
-      const totalTime = baseDelay + lines.length * step + 400;
-      setTimeout(() => sep.classList.add("show"), totalTime);
-      setTimeout(() => cta.classList.add("show"), totalTime + 220);
-      setTimeout(() => footer.classList.add("show"), totalTime + 420);
-    }
-    revealSequence();
+    document.getElementById("playBtn").onclick=()=>window.open(filmUrl,"_blank");
 
-    // ===== Button =====
-    document.getElementById("playBtn").addEventListener("click", () => {
-      window.open(filmUrl, "_blank");
-    });
-
-    // ===== Stars / particles =====
-    const canvas = document.getElementById("stars");
-    const ctx = canvas.getContext("2d", { alpha: true });
-
-    function resize(){
-      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener("resize", resize);
-
-    const W = () => window.innerWidth;
-    const H = () => window.innerHeight;
-
-    // “звёзды” + “частицы”
-    const stars = [];
-    const STAR_COUNT = Math.min(140, Math.floor((W()*H()) / 9000)); // адаптивно
-    const twinkleSpeed = 0.008;
-
-    function rand(min, max){ return min + Math.random() * (max - min); }
-
-    for(let i=0;i<STAR_COUNT;i++){
-      stars.push({
-        x: rand(0, W()),
-        y: rand(0, H()),
-        r: rand(0.6, 1.8),
-        a: rand(0.10, 0.70),
-        t: rand(0, Math.PI*2),
-        s: rand(0.08, 0.30),          // скорость “дрейфа”
-        vx: rand(-0.06, 0.06),
-        vy: rand(-0.10, 0.10)
-      });
-    }
-
+    /* ===== ЗВЁЗДЫ ===== */
+    const c=document.getElementById("stars"),ctx=c.getContext("2d");
+    function resize(){c.width=innerWidth;c.height=innerHeight} resize(); onresize=resize;
+    const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.6,a:Math.random()}));
     function draw(){
-      ctx.clearRect(0,0,W(),H());
-
-      // лёгкая дымка
-      const grad = ctx.createRadialGradient(W()*0.5, H()*0.2, 10, W()*0.5, H()*0.2, Math.max(W(),H())*0.9);
-      grad.addColorStop(0, "rgba(255,255,255,0.035)");
-      grad.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0,0,W(),H());
-
-      // звёзды
-      for(const st of stars){
-        st.t += twinkleSpeed * (0.7 + st.r);
-        st.x += st.vx * st.s;
-        st.y += st.vy * st.s;
-
-        // wrap
-        if(st.x < -10) st.x = W()+10;
-        if(st.x > W()+10) st.x = -10;
-        if(st.y < -10) st.y = H()+10;
-        if(st.y > H()+10) st.y = -10;
-
-        const tw = (Math.sin(st.t) + 1) * 0.5; // 0..1
-        const alpha = st.a * (0.55 + tw * 0.65);
-
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-        ctx.arc(st.x, st.y, st.r * (0.85 + tw*0.45), 0, Math.PI*2);
-        ctx.fill();
-
-        // редкие “искры”
-        if(tw > 0.98 && st.r > 1.2){
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(255,255,255,${alpha*0.45})`;
-          ctx.lineWidth = 1;
-          ctx.moveTo(st.x - 6, st.y);
-          ctx.lineTo(st.x + 6, st.y);
-          ctx.moveTo(st.x, st.y - 6);
-          ctx.lineTo(st.x, st.y + 6);
-          ctx.stroke();
-        }
-      }
-
+      ctx.clearRect(0,0,c.width,c.height);
+      stars.forEach(s=>{
+        s.a+=0.01*(Math.random()>.5?1:-1);
+        ctx.fillStyle=`rgba(255,255,255,${0.3+s.a*0.4})`;
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+      });
       requestAnimationFrame(draw);
-    }
-    draw();
+    } draw();
   </script>
 </body>
 </html>
