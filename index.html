@@ -1,28 +1,279 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>❤️</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin:0;background:black">
-
-<script>
-  const filmUrl = "https://www.kinopoisk.vip/film/5265603/";
-  const startTime = 4988; // 1:23:08
-
-  // редирект на фильм
-  window.location.href = filmUrl;
-
-  // попытка докрутить тайминг
-  setTimeout(() => {
-    const video = document.querySelector("video");
-    if (video) {
-      video.currentTime = startTime;
-      video.play();
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Для тебя ❤️</title>
+  <meta name="theme-color" content="#0b0b12" />
+  <style>
+    :root {
+      --bg1: #0b0b12;
+      --bg2: #131326;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass2: rgba(255, 255, 255, 0.12);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.68);
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 22px;
     }
-  }, 5000);
-</script>
 
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 900px at 20% 10%, #2a144a 0%, transparent 55%),
+                  radial-gradient(1000px 700px at 85% 25%, #113a4a 0%, transparent 55%),
+                  radial-gradient(900px 700px at 50% 95%, #4a1429 0%, transparent 60%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow: hidden;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      transform: rotate(45deg);
+      background: rgba(255, 255, 255, 0.14);
+      filter: blur(0.2px);
+      animation: floatUp linear infinite;
+      border-radius: 3px;
+    }
+    .heart:before, .heart:after {
+      content: "";
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: inherit;
+    }
+    .heart:before { left: -7px; top: 0; }
+    .heart:after  { left: 0; top: -7px; }
+
+    @keyframes floatUp {
+      from { transform: translateY(40vh) rotate(45deg); opacity: 0; }
+      15%  { opacity: .55; }
+      to   { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+    }
+
+    .wrap {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .card {
+      width: min(520px, 100%);
+      background: linear-gradient(180deg, var(--glass), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine {
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 55%);
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+
+    .badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      box-shadow: 0 0 18px rgba(255,255,255,0.28);
+    }
+
+    h1 {
+      margin: 8px 0 6px;
+      font-size: clamp(22px, 4vw, 30px);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .moment {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .time {
+      font-weight: 650;
+      letter-spacing: 0.2px;
+    }
+
+    .hint {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.62);
+      text-align: right;
+      max-width: 54%;
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #0b0b12;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.35);
+      transition: transform .08s ease, opacity .2s ease;
+    }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+
+    .btn.secondary {
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.90);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: none;
+      font-weight: 650;
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+    }
+
+    .tiny {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- floating hearts -->
+  <div class="heart" style="left: 12%; bottom: -10%; animation-duration: 10s; animation-delay: -2s;"></div>
+  <div class="heart" style="left: 28%; bottom: -18%; animation-duration: 12s; animation-delay: -6s; opacity:.35;"></div>
+  <div class="heart" style="left: 46%; bottom: -16%; animation-duration: 11s; animation-delay: -4s;"></div>
+  <div class="heart" style="left: 62%; bottom: -22%; animation-duration: 13s; animation-delay: -7s; opacity:.28;"></div>
+  <div class="heart" style="left: 78%; bottom: -14%; animation-duration: 9.5s; animation-delay: -3s;"></div>
+  <div class="heart" style="left: 90%; bottom: -20%; animation-duration: 12.5s; animation-delay: -8s; opacity:.30;"></div>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="shine"></div>
+
+      <div class="top">
+        <div class="badge"><span class="dot"></span> Маленький сюрприз</div>
+      </div>
+
+      <h1>Сканируй и включай ❤️</h1>
+      <p>Я выбрал момент, который хочется посмотреть <b>вместе</b> (или хотя бы одновременно).</p>
+
+      <div class="moment">
+        <div>
+          <div class="time">▶ Начать с 1:23:08</div>
+          <div style="margin-top:4px; font-size:12.5px; color: rgba(255,255,255,0.62);">
+            Нужный момент уже выставлен
+          </div>
+        </div>
+        <div class="hint">
+          Если вдруг откроется с начала — просто обнови страницу один раз.
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="playBtn">Смотреть с нужного момента</button>
+        <button class="btn secondary" id="copyBtn">Скопировать ссылку</button>
+      </div>
+
+      <div class="footer">
+        <span class="tiny">Нажми ▶ и всё начнётся</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1:23:08 = 4988 секунд
+    const startTime = 4988;
+
+    // Самый “универсальный” формат для многих плееров:
+    const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}`;
+
+    const playBtn = document.getElementById("playBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    // По клику — открываем фильм. Клик помогает обойти блокировки на телефонах.
+    playBtn.addEventListener("click", () => {
+      // В той же вкладке (чтобы было “как приложение”)
+      window.location.href = filmUrl;
+    });
+
+    // Кнопка “Скопировать ссылку”
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        copyBtn.textContent = "Ссылка скопирована ✓";
+        setTimeout(() => (copyBtn.textContent = "Скопировать ссылку"), 1600);
+      } catch (e) {
+        // запасной вариант
+        const dummy = document.createElement("input");
+        dummy.value = window.location.href;
+        document.body.appendChild(dummy);
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        copyBtn.textContent = "Ссылка скопирована ✓";
+        setTimeout(() => (copyBtn.textContent = "Скопировать ссылку"), 1600);
+      }
+    });
+  </script>
 </body>
 </html>
