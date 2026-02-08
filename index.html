@@ -11,7 +11,7 @@
       --glass:rgba(255,255,255,.08);
       --border:rgba(255,255,255,.16);
       --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
+      --muted:rgba(255,255,255,.70);
       --shadow:0 20px 60px rgba(0,0,0,.55);
       --r:22px;
     }
@@ -47,32 +47,53 @@
       transform:rotate(12deg);
       pointer-events:none;
     }
-    h1{margin:10px 0 8px;font-size:clamp(24px,4.4vw,34px);letter-spacing:-.4px;line-height:1.1}
-    p{margin:0;color:var(--muted);line-height:1.5;font-size:15.5px}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.18);
+      color:rgba(255,255,255,.72);
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:rgba(255,255,255,0.65);
+      box-shadow:0 0 18px rgba(255,255,255,0.25);
+    }
+    h1{margin:12px 0 8px;font-size:clamp(24px,4.4vw,34px);letter-spacing:-.4px;line-height:1.1}
+    p{margin:0;color:var(--muted);line-height:1.55;font-size:15.5px}
     .moment{
       margin-top:16px;
       padding:14px;
       border-radius:16px;
       background:rgba(255,255,255,0.07);
       border:1px solid rgba(255,255,255,0.14);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
     }
-    .time{font-weight:750}
-    .sub{margin-top:5px;font-size:12.5px;color:rgba(255,255,255,.62)}
-    .hint{
-      font-size:12.5px;
+    .timeRow{
+      display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      margin-bottom:6px;
+    }
+    .time{
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size:16px;
+    }
+    .soft{
+      font-size:12.8px;
       color:rgba(255,255,255,.62);
+      line-height:1.35;
       text-align:right;
-      max-width:52%;
+      max-width:58%;
     }
     .actions{margin-top:16px;display:grid;gap:10px}
     .btn{
       appearance:none;border:0;border-radius:16px;
       padding:14px 16px;
-      font-size:16px;font-weight:750;
+      font-size:16px;font-weight:780;
       cursor:pointer;
       color:#0b0b12;
       background:rgba(255,255,255,.92);
@@ -80,26 +101,14 @@
       transition:transform .08s ease,opacity .2s ease;
     }
     .btn:active{transform:translateY(1px) scale(.99)}
-    .btn.secondary{
-      background:rgba(255,255,255,0.10);
-      color:rgba(255,255,255,0.90);
-      border:1px solid rgba(255,255,255,0.18);
-      box-shadow:none;
-      font-weight:680;
-    }
-    .divider{
-      margin:14px 0 10px;
-      height:1px;background:rgba(255,255,255,0.12);
-    }
     .footer{
-      margin-top:10px;
+      margin-top:12px;
       text-align:center;
-      font-size:12.5px;
+      font-size:12.6px;
       color:rgba(255,255,255,0.55);
     }
     .pill{
       display:inline-block;
-      margin-top:6px;
       padding:8px 10px;
       border-radius:999px;
       background:rgba(255,255,255,0.06);
@@ -107,75 +116,53 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
       <div class="shine"></div>
 
-      <!-- ТВОЁ ПРИЗНАНИЕ -->
+      <div class="badge"><span class="dot"></span> Маленький сюрприз</div>
+
       <h1>Любимая ❤️</h1>
       <p>
         Ты — самое лучшее, что со мной произошло.<br>
-        Я хочу, чтобы ты увидела один момент… именно с него.
+        Я хочу, чтобы ты посмотрела один момент… именно с него.
       </p>
 
       <div class="moment">
-        <div>
-          <div class="time">▶ Начать с 1:23:08</div>
-          <div class="sub">Я поставил нужный тайминг заранее</div>
+        <div class="timeRow">
+          <div class="time">▶ Начни с 1:23:08</div>
+          <div class="soft">
+            Если вдруг откроется с начала —<br>
+            просто перемотай на <b>1:23:08</b> 💛
+          </div>
         </div>
-        <div class="hint">
-          На iPhone иногда стартует с начала — это нормально.<br>
-          Тогда просто перемотай на <b>1:23:08</b> 💛
+        <div style="font-size:12.8px;color:rgba(255,255,255,.62);">
+          Я выбрал эту минуту не случайно.
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn" id="playBtn">Смотреть с нужного момента</button>
-        <button class="btn secondary" id="copyTimeBtn">Скопировать “1:23:08”</button>
+        <button class="btn" id="playBtn">Смотреть</button>
       </div>
 
-      <div class="divider"></div>
-
       <div class="footer">
-        <span class="pill">Если начнётся с начала — перемотай на 1:23:08 ❤️</span>
+        <span class="pill">Если началось не с того — 1:23:08 ❤️</span>
       </div>
     </div>
   </div>
 
   <script>
-    // 1:23:08 = 4988 секунд
-    const startTime = 4988;
-
-    // “Комбо”-тайминг: разные плееры слушают разные параметры
+    const startTime = 4988; // 1:23:08
     const filmUrl =
       `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}&time=${startTime}#t=${startTime}`;
 
     const playBtn = document.getElementById("playBtn");
-    const copyTimeBtn = document.getElementById("copyTimeBtn");
 
-    // На iPhone надёжнее открывать по клику (и часто лучше в новой вкладке)
+    // На iPhone надёжнее открывать по клику, часто лучше в новой вкладке
     playBtn.addEventListener("click", () => {
       window.open(filmUrl, "_blank");
-    });
-
-    // Копируем тайм-код — чтобы ей было супер легко
-    copyTimeBtn.addEventListener("click", async () => {
-      const text = "1:23:08";
-      try {
-        await navigator.clipboard.writeText(text);
-        copyTimeBtn.textContent = "Скопировано ✓";
-        setTimeout(() => (copyTimeBtn.textContent = "Скопировать “1:23:08”"), 1600);
-      } catch (e) {
-        const dummy = document.createElement("input");
-        dummy.value = text;
-        document.body.appendChild(dummy);
-        dummy.select();
-        document.execCommand("copy");
-        document.body.removeChild(dummy);
-        copyTimeBtn.textContent = "Скопировано ✓";
-        setTimeout(() => (copyTimeBtn.textContent = "Скопировать “1:23:08”"), 1600);
-      }
     });
   </script>
 </body>
