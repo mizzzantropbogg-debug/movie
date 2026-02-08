@@ -2,162 +2,319 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Для тебя ❤️</title>
+
+  <!-- Красивый шрифт (можешь поменять позже) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Marck+Script&display=swap" rel="stylesheet">
+
   <meta name="theme-color" content="#0b0b12" />
+
   <style>
     :root{
-      --bg1:#0b0b12; --bg2:#141428;
-      --glass:rgba(255,255,255,.08);
-      --border:rgba(255,255,255,.16);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.70);
-      --shadow:0 20px 60px rgba(0,0,0,.55);
-      --r:22px;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
+      --glass: rgba(0,0,0,.34);
+      --glass2: rgba(255,255,255,.10);
+      --border: rgba(255,255,255,.16);
+      --r: 22px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
+      color: var(--text);
+      font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #0b0b12;
+      overflow-x: hidden;
+    }
+
+    /* ===== Background slideshow ===== */
+    .bg{
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: #0b0b12;
+    }
+    .bg::after{
+      content:"";
+      position:absolute; inset:0;
       background:
-        radial-gradient(1200px 900px at 20% 10%, #2a144a 0%, transparent 55%),
-        radial-gradient(1000px 700px at 85% 25%, #113a4a 0%, transparent 55%),
-        radial-gradient(900px 700px at 50% 95%, #4a1429 0%, transparent 60%),
-        linear-gradient(180deg,var(--bg1),var(--bg2));
-      overflow:hidden;
+        radial-gradient(1200px 800px at 20% 10%, rgba(170,90,255,.18), transparent 55%),
+        radial-gradient(1000px 700px at 85% 25%, rgba(90,210,255,.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 95%, rgba(255,90,130,.14), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.70));
+      z-index: 2;
+      pointer-events: none;
     }
-    .wrap{height:100%;display:grid;place-items:center;padding:18px}
-    .card{
-      width:min(560px,100%);
-      background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.05));
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      box-shadow:var(--shadow);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+
+    .slide{
+      position:absolute; inset:-5%;
+      background-size: cover;
+      background-position: center;
+      filter: blur(10px) saturate(1.05);
+      transform: scale(1.08);
+      opacity: 0;
+      transition: opacity 1.6s ease;
+      z-index: 1;
     }
-    .shine{
-      position:absolute;inset:-40%;
-      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 55%);
-      transform:rotate(12deg);
-      pointer-events:none;
+    .slide.active{ opacity: 1; }
+
+    /* ===== Layout ===== */
+    .wrap{
+      min-height: 100%;
+      display: grid;
+      place-items: start center;
+      padding: 22px 16px 40px;
     }
-    .badge{
+
+    .paper{
+      width: min(760px, 100%);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.46));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: relative;
+    }
+
+    .topbar{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+    }
+
+    .chip{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:9px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.10);
-      border:1px solid rgba(255,255,255,0.18);
-      color:rgba(255,255,255,.72);
-      font-size:13px;
-      letter-spacing:.2px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.78);
+      font-size: 12.5px;
+      letter-spacing: .2px;
     }
     .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:rgba(255,255,255,0.65);
-      box-shadow:0 0 18px rgba(255,255,255,0.25);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 0 18px rgba(255,255,255,.22);
     }
-    h1{margin:12px 0 8px;font-size:clamp(24px,4.4vw,34px);letter-spacing:-.4px;line-height:1.1}
-    p{margin:0;color:var(--muted);line-height:1.55;font-size:15.5px}
-    .moment{
-      margin-top:16px;
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.07);
-      border:1px solid rgba(255,255,255,0.14);
+
+    .content{
+      padding: 18px 18px 16px;
     }
-    .timeRow{
-      display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      margin-bottom:6px;
+
+    .title{
+      font-family: "Marck Script", cursive;
+      font-size: clamp(30px, 5.2vw, 46px);
+      line-height: 1.05;
+      margin: 6px 0 8px;
+      letter-spacing: .2px;
     }
-    .time{
-      font-weight:800;
-      letter-spacing:.2px;
-      font-size:16px;
+
+    .letter{
+      margin: 0;
+      color: rgba(255,255,255,.84);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.75;
+      white-space: pre-wrap;
     }
-    .soft{
-      font-size:12.8px;
-      color:rgba(255,255,255,.62);
-      line-height:1.35;
-      text-align:right;
-      max-width:58%;
+
+    .separator{
+      height: 1px;
+      background: rgba(255,255,255,.12);
+      margin: 18px 0;
     }
-    .actions{margin-top:16px;display:grid;gap:10px}
+
+    /* ===== CTA box ===== */
+    .cta{
+      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .ctaRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ctaTitle{
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .ctaHint{
+      color: rgba(255,255,255,.66);
+      font-size: 12.8px;
+      line-height: 1.35;
+      text-align: right;
+      max-width: 56%;
+    }
+
     .btn{
-      appearance:none;border:0;border-radius:16px;
-      padding:14px 16px;
-      font-size:16px;font-weight:780;
-      cursor:pointer;
-      color:#0b0b12;
-      background:rgba(255,255,255,.92);
-      box-shadow:0 14px 34px rgba(0,0,0,0.35);
-      transition:transform .08s ease,opacity .2s ease;
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      color: #0b0b12;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.35);
+      transition: transform .08s ease, opacity .2s ease;
     }
-    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn:active{ transform: translateY(1px) scale(.99); }
+
     .footer{
-      margin-top:12px;
-      text-align:center;
-      font-size:12.6px;
-      color:rgba(255,255,255,0.55);
+      padding: 12px 18px 16px;
+      color: rgba(255,255,255,.55);
+      font-size: 12.5px;
+      text-align: center;
     }
     .pill{
       display:inline-block;
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+    }
+
+    @media (max-width: 420px){
+      .ctaHint{ max-width: 100%; text-align:left; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Background slideshow layers -->
+  <div class="bg" aria-hidden="true">
+    <div class="slide active" id="slideA"></div>
+    <div class="slide" id="slideB"></div>
+  </div>
+
   <div class="wrap">
-    <div class="card">
-      <div class="shine"></div>
+    <div class="paper">
+      <div class="topbar">
+        <div class="chip"><span class="dot"></span> Для тебя</div>
+        <div class="chip">❤️</div>
+      </div>
 
-      <div class="badge"><span class="dot"></span> Маленький сюрприз</div>
+      <div class="content">
+        <div class="title">Любимая…</div>
 
-      <h1>Любимая ❤️</h1>
-      <p>
-        Ты — самое лучшее, что со мной произошло.<br>
-        Я хочу, чтобы ты посмотрела один момент…
-      </p>
+        <!-- ТУТ ТЫ ПОТОМ ЗАМЕНИШЬ ТЕКСТ ПОД СЕБЯ -->
+        <p class="letter" id="loveText">
+Я долго думал, как сказать это так, чтобы не “громко”, а по-настоящему.
 
-      <div class="moment">
-        <div class="timeRow">
-          <div class="time">▶ Начни с 1:23:08</div>
-          <div class="soft">
-            Если вдруг откроется с начала —<br>
-            просто перемотай на <b>1:23:08</b> 💛
+Ты — человек, рядом с которым у меня внутри становится тише.
+С тобой даже обычные дни кажутся важными, потому что в них есть ты.
+
+Мне нравится, как ты смеёшься, как смотришь, как молчишь.
+Мне нравится, что ты есть. И что ты — рядом.
+
+Я не обещаю идеальности.
+Но обещаю беречь тебя в мелочах: в словах, в поступках, в выборе быть рядом.
+
+И я очень хочу, чтобы ты увидела один момент… именно с него всё начинается.
+        </p>
+
+        <div class="separator"></div>
+
+        <!-- ОКОШКО С ПЕРЕХОДОМ НА ФИЛЬМ -->
+        <div class="cta">
+          <div class="ctaRow">
+            <div>
+              <div class="ctaTitle">Тот самый момент — 1:23:08</div>
+              <div style="margin-top:6px;color:rgba(255,255,255,.66);font-size:12.8px;">
+                Нажми кнопку — откроется фильм
+              </div>
+            </div>
+            <div class="ctaHint">
+              На iPhone иногда открывается с начала — тогда просто перемотай на <b>1:23:08</b> 💛
+            </div>
           </div>
-        </div>
-        <div style="font-size:12.8px;color:rgba(255,255,255,.62);">
-          Я выбрал эту минуту не случайно.
+
+          <button class="btn" id="playBtn">Открыть фильм</button>
         </div>
       </div>
 
-      <div class="actions">
-        <button class="btn" id="playBtn">Смотреть</button>
+      <div class="footer">
+        <span class="pill">Это маленькое признание — от меня к тебе ❤️</span>
       </div>
     </div>
   </div>
 
   <script>
+    // ===== Настройки =====
     const startTime = 4988; // 1:23:08
-    const filmUrl =
-      `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}&time=${startTime}#t=${startTime}`;
+    const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}&time=${startTime}#t=${startTime}`;
 
-    const playBtn = document.getElementById("playBtn");
+    // Поставь сюда столько фото, сколько загрузишь в /photos/
+    // Просто добавляй "photos/4.jpg", "photos/5.jpg" и т.д.
+    const photos = [
+      "photos/1.jpg",
+      "photos/2.jpg",
+      "photos/3.jpg"
+    ];
 
-    // На iPhone надёжнее открывать по клику, часто лучше в новой вкладке
-    playBtn.addEventListener("click", () => {
+    // ===== Фон-слайдшоу =====
+    const slideA = document.getElementById("slideA");
+    const slideB = document.getElementById("slideB");
+
+    // Предзагрузка
+    photos.forEach(src => { const img = new Image(); img.src = src; });
+
+    let idx = 0;
+    let showingA = true;
+
+    function setBg(el, src){
+      el.style.backgroundImage = `url('${src}')`;
+    }
+
+    // Стартовый фон
+    setBg(slideA, photos[0] || "");
+    setBg(slideB, photos[1] || photos[0] || "");
+
+    // Каждые 7 секунд плавная смена
+    setInterval(() => {
+      if (photos.length < 2) return;
+
+      idx = (idx + 1) % photos.length;
+      const nextSrc = photos[idx];
+
+      const incoming = showingA ? slideB : slideA;
+      const outgoing = showingA ? slideA : slideB;
+
+      setBg(incoming, nextSrc);
+      incoming.classList.add("active");
+      outgoing.classList.remove("active");
+
+      showingA = !showingA;
+    }, 7000);
+
+    // ===== Кнопка фильма =====
+    document.getElementById("playBtn").addEventListener("click", () => {
+      // На iPhone стабильнее открывать по клику в новой вкладке
       window.open(filmUrl, "_blank");
     });
   </script>
