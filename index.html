@@ -362,7 +362,8 @@
     // ВАЖНО: удаляем только первую строку "Привет..." из первого абзаца,
     // но оставляем "До сих пор..." в письме
     if (paragraphs.length > 0 && paragraphs[0].startsWith("Привет моя любимая жена")) {
-      paragraphs[0] = paragraphs[0].replace(/^Привет моя любимая жена …\s*\n?/, "").trim();
+      // убираем первую строку целиком, чтобы "До сих пор..." точно осталось
+      paragraphs[0] = paragraphs[0].split("\n").slice(1).join("\n").trim();
       if (!paragraphs[0]) paragraphs.shift();
     }
 
