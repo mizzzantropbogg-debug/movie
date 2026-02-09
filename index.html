@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Для тебя ❤️</title>
 
+  <!-- Красивые шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
   <meta name="theme-color" content="#0b0b12" />
 
@@ -20,13 +21,13 @@
       --r: 22px;
     }
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    html,body{ height:100%; scroll-behavior:smooth; }
     body{
       margin:0;
-      font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:#0b0b12;
       overflow-x:hidden;
+      font-family:"Cormorant Garamond", serif;
     }
 
     /* ===== ФОН (спокойный) ===== */
@@ -36,12 +37,12 @@
         radial-gradient(1000px 700px at 20% 15%, rgba(170,90,255,.16), transparent 55%),
         radial-gradient(900px 650px at 85% 30%, rgba(90,210,255,.12), transparent 55%),
         radial-gradient(900px 700px at 50% 95%, rgba(255,90,130,.12), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.84));
+        linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.86));
     }
     .bg::after{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(1200px 720px at 50% 10%, rgba(0,0,0,.08), rgba(0,0,0,.62));
+      background: radial-gradient(1200px 720px at 50% 10%, rgba(0,0,0,.07), rgba(0,0,0,.66));
       pointer-events:none;
     }
 
@@ -53,15 +54,16 @@
       min-height:100%;
       display:grid;
       place-items:start center;
-      padding:22px 16px 44px;
+      padding:22px 16px 52px;
     }
     .paper{
-      width:min(880px,100%);
+      width:min(900px,100%);
       border-radius:var(--r);
       border:1px solid var(--border);
       background:rgba(0,0,0,.46);
       box-shadow:var(--shadow);
       overflow:hidden;
+      position:relative;
     }
     .topbar{
       padding:14px 16px;
@@ -77,6 +79,8 @@
       background:rgba(255,255,255,.06);
       font-size:12.5px;
       color:rgba(255,255,255,.85);
+      font-family:"Montserrat", sans-serif;
+      letter-spacing:.2px;
     }
     .content{ padding:20px; }
 
@@ -85,9 +89,8 @@
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 12px;
-      margin: 6px 0 16px;
+      margin: 6px 0 10px;
     }
-
     .polaroid{
       background: rgba(255,255,255,.96);
       color:#111;
@@ -105,7 +108,6 @@
       opacity:1;
       transform: translateY(0) rotate(var(--rot, -2deg)) scale(1);
     }
-
     .polaroid::before{
       content:"";
       position:absolute; inset:0;
@@ -113,28 +115,25 @@
       pointer-events:none;
       opacity:.55;
     }
-
     .photo{
       width:100%;
       border-radius: 10px;
       overflow:hidden;
       background:#eaeaea;
-      position:relative;
       aspect-ratio: 4 / 3;
     }
     .polaroid.big .photo{ aspect-ratio: 16 / 9; }
-
     .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     .caption{
       margin-top:10px;
-      font-family:"Marck Script",cursive;
-      font-size: 22px;
-      line-height: 1.1;
+      font-family:"Great Vibes", cursive;
+      font-size: 26px;
+      line-height: 1.05;
       padding: 0 2px;
       opacity:.92;
+      color:#111;
     }
-    .polaroid.big .caption{ font-size: 24px; }
 
     .tape{
       position:absolute;
@@ -156,21 +155,19 @@
       opacity:.9;
     }
 
-    /* layout: 2 big (full width) + 8 small (2 per row) */
     .polaroid.big{ grid-column: span 12; }
     .polaroid.small{ grid-column: span 6; }
 
     @media (max-width: 640px){
       .polaroid.small{ grid-column: span 12; }
-      .caption{ font-size: 20px; }
-      .polaroid.big .caption{ font-size: 22px; }
+      .caption{ font-size: 24px; }
     }
 
-    /* ===== Текст ===== */
+    /* ===== Заголовок/текст ===== */
     .title{
-      font-family:"Marck Script",cursive;
-      font-size:clamp(30px,5vw,46px);
-      margin:10px 0 14px;
+      font-family:"Great Vibes", cursive;
+      font-size:clamp(34px,5.4vw,54px);
+      margin:12px 0 10px;
       opacity:0;
       transform:translateY(14px);
       transition:opacity 1s ease, transform 1s ease;
@@ -178,11 +175,15 @@
     }
     .title.show{ opacity:1; transform:none; }
 
+    .letter{
+      margin-top: 6px;
+    }
+
     .line{
-      font-size:16px;
-      line-height:1.78;
-      font-weight:300;
-      margin:0;
+      font-size: 20px;
+      line-height: 1.6;
+      font-weight: 400;
+      margin: 0;
       opacity:0;
       transform:translateY(10px);
       transition:opacity 1.05s ease, transform 1.05s ease;
@@ -190,12 +191,13 @@
       white-space: pre-wrap;
     }
     .line.show{ opacity:1; transform:none; }
-    .spacer{ height:12px; }
+
+    .spacer{ height:14px; }
 
     .separator{
       height:1px;
       background:rgba(255,255,255,.18);
-      margin:22px 0;
+      margin:24px 0;
       opacity:0;
       transition:opacity 1s ease;
     }
@@ -212,13 +214,18 @@
       transition:opacity 1s ease, transform 1s ease;
     }
     .cta.show{ opacity:1; transform:none; }
-    .ctaTitle{ font-weight:700; }
+    .ctaTitle{
+      font-weight:700;
+      font-family:"Montserrat", sans-serif;
+      letter-spacing:.2px;
+    }
     .ctaHint{
-      font-size:12.8px;
+      font-size:13.5px;
       color:rgba(255,255,255,.74);
       margin-top:6px;
       line-height:1.35;
       text-shadow: 0 2px 18px rgba(0,0,0,.55);
+      font-family:"Montserrat", sans-serif;
     }
 
     .btn{
@@ -229,6 +236,7 @@
       padding:14px;
       font-size:16px;
       font-weight:800;
+      font-family:"Montserrat", sans-serif;
       background:rgba(255,255,255,.95);
       color:#0b0b12;
       cursor:pointer;
@@ -243,14 +251,62 @@
 
     .footer{
       text-align:center;
-      font-size:12.5px;
+      font-size:15px;
       color:rgba(255,255,255,.62);
       padding:14px;
       opacity:0;
       transition:opacity 1s ease;
       text-shadow: 0 2px 18px rgba(0,0,0,.55);
+      font-family:"Montserrat", sans-serif;
     }
     .footer.show{ opacity:1; }
+
+    /* ===== ПОДСКАЗКА ПРОКРУТКИ ===== */
+    .scrollHint{
+      position: sticky;
+      bottom: 10px;
+      width: 100%;
+      display:flex;
+      justify-content:center;
+      z-index: 5;
+      pointer-events:none;
+      margin-top: 10px;
+    }
+    .scrollPill{
+      pointer-events:auto;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.40);
+      box-shadow: 0 12px 26px rgba(0,0,0,.35);
+      color: rgba(255,255,255,.88);
+      font-family:"Montserrat", sans-serif;
+      font-size:12.8px;
+      letter-spacing:.2px;
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .6s ease, transform .6s ease;
+      user-select:none;
+    }
+    .scrollPill.show{ opacity:1; transform: translateY(0); }
+    .arrow{
+      width: 18px; height: 18px;
+      display:inline-block;
+      border-right:2px solid rgba(255,255,255,.85);
+      border-bottom:2px solid rgba(255,255,255,.85);
+      transform: rotate(45deg);
+      margin-bottom: 2px;
+      animation: bounce 1.6s ease-in-out infinite;
+      opacity:.9;
+    }
+    @keyframes bounce{
+      0%,100%{ transform: rotate(45deg) translate(0,0); }
+      50%{ transform: rotate(45deg) translate(2px,2px); }
+    }
   </style>
 </head>
 
@@ -259,7 +315,7 @@
   <canvas id="stars"></canvas>
 
   <div class="wrap">
-    <div class="paper">
+    <div class="paper" id="paper">
       <div class="topbar">
         <div class="chip">Для тебя</div>
         <div class="chip">❤️</div>
@@ -268,105 +324,18 @@
       <div class="content">
         <div class="polaroids" id="polaroids"></div>
 
+        <div class="scrollHint">
+          <div class="scrollPill" id="scrollPill" title="Прокрутить вниз">
+            <span>Прокрути вниз</span>
+            <span class="arrow"></span>
+          </div>
+        </div>
+
         <div class="title" id="title">Привет моя любимая жена…</div>
 
-        <!-- ТВОЙ ТЕКСТ: разбит на строки для “письма” -->
-        <p class="line">До сих пор не знаю правильно делаю или нет, что решил все это написать, но будь что будет уже.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Все проблемы решаются в кругу семьи. Когда ты не думаешь как сделать хуже, а когда держишься вместе.</p>
-        <p class="line">Мы не зря женились. Для тебя может быть это ничего и не значит судя по всему, но я делал осознанный выбор в пользу тебя.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Я сколько времени пытался донести до тебя одну простую вещь.</p>
-        <p class="line">Что мы семья. Что мы не враги друг другу, а родные люди, которые должны быть вместе.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Я не могу сказать что проебал больше года с тобой. Потому что я был реально счастливым человеком.</p>
-        <p class="line">Я ни капли не сожалею. Ты правда стала для меня родным человеком. Мне правда тяжело все это отпускать.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Спасибо за те дни которые мы были вместе. Просто спасибо тебе за все, что ты сделала.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Нужно уметь решать проблемы, а не расходиться при каждом случае. Всегда можно обговорить.</p>
-        <p class="line">Нужно уметь разговаривать, а не игнорить ситуацию.</p>
-        <p class="line">Скажи кому стало легче от того что произошло? Мне точно нет.</p>
-        <p class="line">Помолчали, успокоились и продолжили дальше идти к совместной цели. Жизнь одна.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Мне тяжело признавать, что в один момент потерял не только жену, но и двух дочерей.</p>
-        <p class="line">Может это и громко сказано, но я правда к ним относился как к своим.</p>
-        <p class="line">Я не был им по крови отцом, но делал все чтобы они меня считали родным человеком.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Знаешь, очень хреново ощущается этот момент, после стольких "споров" кто сильнее любит,</p>
-        <p class="line">какие у нас будут шторы в зале, после споров какое имя будет у нашего малыша,</p>
-        <p class="line">сейчас даже не знать как у тебя дела и все ли хорошо с тобой.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Я все также хочу с тобой семью.</p>
-        <p class="line">Я все также хочу чтобы мы жили вместе и строили совместные планы на будущее.</p>
-        <p class="line">Я все также хочу от тебя нашего маленького малыша.</p>
-        <p class="line">Я все также хочу с тобой обвенчаться.</p>
-        <p class="line">Я все также хочу прожить именно с тобой всю жизнь.</p>
-        <p class="line">Я все также хочу видеть твою счастливую улыбку каждый день.</p>
-        <p class="line">Хочу просыпаться и засыпать в твоих объятиях.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Ты должна понимать что никаких идеальных отношений не существует.</p>
-        <p class="line">Якобы в “идеальных отношениях” не должны ссориться, ругаться и т.д.</p>
-        <p class="line">Идеальные отношения - это когда даже в тяжёлых ситуациях, сильных ссорах или совершенных ошибках,</p>
-        <p class="line">каждый раз выбирают ДРУГ ДРУГА, но не в коем случае не отказываются ДРУГ ОТ ДРУГА.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Пойми, что для меня не стрёмно приехать вот так к тебе.</p>
-        <p class="line">Зная что тебе это даже и не нужно. Зная что ты уже все и так решила.</p>
-        <p class="line">Да я переступаю через всю херню которая между нами сейчас и все равно бегу к тебе.</p>
-        <p class="line">Да, даже чтобы просто увидеть тебя, поговорить, обнять, поцеловать.</p>
-        <p class="line">Да, может и на час времени всего.</p>
-        <p class="line">Да, вот так сел и поехал к любимому человеку.</p>
-        <p class="line">Да, зная что уеду обратно уже в одиночестве и в никуда.</p>
-        <p class="line">Но я лучше тысячу раз опозорюсь и покажу свою слабость, нежели оставлю все как есть.</p>
-        <p class="line">Я лучше сделаю свой шаг на встречу к тебе, чем потом буду сожалеть годами что не попытался все исправить.</p>
-        <p class="line">Я правда надеюсь, что все моменты с первого дня нашего знакомства по сегодняшний день были не зря в нашей жизни.</p>
-        <p class="line">Я все также жду тебя и хочу чтобы ты была рядом.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Спасибо что показала, что такое на самом деле значение слова "любовь".</p>
-        <p class="line">Я правда всем сердцем тебе благодарен. Что именно с тобой я почувствовал это.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Я хотел бы это все высказать глядя тебе в глаза, но я знаю, что даже половины не смогу выразить.</p>
-        <p class="line">Пусть это письмо будет "прощальным" и я высказался по максимум, что так и не смог в жившую.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Честно скажу, я ни разу не хотел с тобой разводиться.</p>
-        <p class="line">Принял заявку от тебя лишь потому, что знаю и так итог, и нет смысла отнекивается уже.</p>
-        <p class="line">Я не бежал к тебе с просьбами обдумать все и не доводить до этого.</p>
-        <p class="line">Я замолчал до сегодняшнего дня.</p>
-        <p class="line">Дал тебе время все взвесить и для себя решить окончательно чего именно ТЫ хочешь.</p>
-        <p class="line">Но и если ты это читаешь, это значит я уже пошел прощаться с девочками, а ты все таки сделала свой выбор.</p>
-        <p class="line">Просто знай, что я все также по прежнему тебя люблю. Да, сквозь боль и переживания.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Тяжело признавать конечно, но я проиграл.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Нужно было всего лишь сесть и вместе поговорить. Не доводить до точки невозврата.</p>
-        <p class="line">Но я чисто физически этого не мог сделать находясь на работе. Ты решила все за нас обоих.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Мы реально с тобой Биба и Боба два долбаеба, которые допустили чтобы так все закончилось и не нашли в нужный момент компромисс.</p>
-        <div class="spacer"></div>
-
-        <p class="line">Я не жалею что в тебя влюбился.</p>
-        <p class="line">Я бы влюбился в тебя заново,</p>
-        <p class="line">Ничего не меняя.</p>
-        <p class="line">Влюбился бы в тебя заново,</p>
-        <p class="line">Ничуть не сомневаясь.</p>
-        <p class="line">Влюбился бы в тебя заново,</p>
-        <p class="line">Даже если бы знал, что будет такой грустный финал.</p>
+        <div class="letter" id="letter">
+          <!-- JS заполнит строки письма -->
+        </div>
 
         <div class="separator" id="sep"></div>
 
@@ -380,9 +349,7 @@
         </div>
       </div>
 
-      <div class="footer" id="footer">
-        Я всё ещё рядом. ❤️
-      </div>
+      <div class="footer" id="footer">Я всё ещё рядом. ❤️</div>
     </div>
   </div>
 
@@ -391,30 +358,25 @@
     const filmUrl = `https://www.kinopoisk.vip/film/5265603/?t=${startTime}&start=${startTime}#t=${startTime}`;
 
     // ===== 10 ФОТО (в корне репозитория) =====
-    // Впиши свои реальные имена файлов:
     const photos = [
       "1.jpg","2.jpg","3.jpg","4.jpg","5.jpg",
       "6.jpg","7.jpg","8.jpg","9.jpg","10.jpg"
     ];
 
-    // Подписи под полароидами (можешь поменять/убрать)
+    // Подписи под полароидами (можешь менять)
     const captions = [
       "мы", "ты", "улыбка", "момент",
       "вместе", "тепло", "дом", "любовь",
       "мой мир", "навсегда"
     ];
 
+    // ===== РЕНДЕР POLAROIDS =====
     const pol = document.getElementById("polaroids");
-
     function rot(i){
       const arr = [-3.5, 2.8, -2.1, 3.3, -2.9, 2.2, -1.6, 3.0, -2.4, 2.6];
       return arr[i % arr.length];
     }
-
-    function sizeForIndex(i){
-      // 0 и 5 — большие карточки
-      return (i === 0 || i === 5) ? "big" : "small";
-    }
+    function sizeForIndex(i){ return (i === 0 || i === 5) ? "big" : "small"; }
 
     const polaroidEls = [];
     photos.forEach((src, i) => {
@@ -432,13 +394,114 @@
       polaroidEls.push(card);
     });
 
-    // Появление полароидов по очереди
+    // ===== ТВОЙ ТЕКСТ (вставлен 1-в-1) =====
+    const letterText = `Привет моя любимая жена …
+До сих пор не знаю правильно делаю или нет, что решил все это написать, но будь что будет уже. Явно хуже уже быть и так не может.
+
+Все проблемы решаются в кругу семьи. Когда ты не думаешь как сделать хуже, а когда держишься вместе. Мы не зря женились. Для тебя может быть это ничего и не значит судя по всему, но я делал осознанный выбор в пользу тебя. 
+
+Я сколько времени пытался донести до тебя одну простую вещь. Что мы семья. Что мы не враги друг другу, а родные люди, которые должны быть вместе. 
+
+Я не могу сказать что проебал больше года с тобой. Потому что я был реально счастливым человеком. Я ни капли не сожалею. Ты правда стала для меня родным человеком. Мне правда тяжело все это отпускать. 
+
+Спасибо за те дни которые мы были вместе. Просто спасибо тебе за все, что ты сделала. 
+
+Нужно уметь решать проблемы, а не расходиться при каждом случае. Всегда можно обговорить. Нужно уметь разговаривать, а не игнорить ситуацию. Скажи кому стало легче от того что произошло? Мне точно нет. Помолчали, успокоились и продолжили дальше идти к совместной цели. Жизнь одна. 
+
+Мне тяжело признавать, что в один момент потерял не только жену, но и двух дочерей. Может это и громко сказано, но я правда к ним относился как к своим. Я не был им по крови отцом, но делал все чтобы они меня считали родным человеком. 
+
+Знаешь, очень хреново ощущается этот момент,  после стольких "споров" кто сильнее любит, какие у нас будут шторы в зале, после споров какое имя будет у нашего малыша, сейчас даже не знать как у тебя дела и все ли хорошо с тобой. 
+
+Я все также хочу с тобой семью. 
+Я все также хочу чтобы мы жили вместе и строили совместные планы на будущее. 
+Я все также хочу от тебя нашего маленького малыша. 
+Я все также хочу с тобой обвенчаться. 
+Я все также хочу прожить именно с тобой всю жизнь. 
+Я все также хочу видеть твою счастливую улыбку каждый день. 
+Хочу просыпаться и засыпать в твоих объятиях. 
+
+Ты должна понимать что никаких идеальных отношений не существует. Якобы в “идеальных отношениях” не должны ссориться, ругаться и т.д. Идеальные отношения - это когда даже в тяжёлых ситуациях, сильных ссорах или совершенных ошибках, каждый раз выбирают ДРУГ ДРУГА, но не в коем случае не отказываются ДРУГ ОТ ДРУГА. 
+
+Пойми, что для меня не стрёмно приехать вот так к тебе. Зная что тебе это даже и не нужно. Зная что ты уже все и так решила. 
+Да я переступаю через всю херню которая между нами сейчас и все равно бегу к тебе. 
+Да, даже чтобы просто увидеть тебя, поговорить, обнять, поцеловать. 
+Да, может и на час времени всего. 
+Да, вот так сел и поехал к любимому человеку. 
+Да, зная что уеду обратно уже в одиночестве и в никуда. 
+Но я лучше тысячу раз опозорюсь и покажу свою слабость, нежели оставлю все как есть.
+Я лучше сделаю свой шаг на встречу к тебе, чем потом буду сожалеть годами что не попытался все исправить. 
+Я правда надеюсь, что все моменты с первого дня нашего знакомства по сегодняшний день были не зря в нашей жизни. 
+Я все также жду тебя и хочу чтобы ты была рядом.
+
+Спасибо что показала, что такое на самом деле значение слова "любовь". Я правда всем сердцем тебе благодарен. Что именно с тобой я почувствовал это. 
+
+Я хотел бы это все высказать глядя тебе в глаза, но я знаю, что даже половины не смогу выразить. Пусть это письмо будет "прощальным" и я высказался по максимум, что так и не смог в жившую.
+
+Честно скажу, я ни разу не хотел с тобой разводиться. Принял заявку от тебя лишь потому, что знаю итог, и нет смысла отнекивается уже. Я не бежал к тебе с просьбами обдумать все и не доводить до этого. Я замолчал до сегодняшнего дня. Дал тебе время все взвесить и для себя решить окончательно, чего именно ТЫ хочешь. Но и если ты это читаешь, значит я уже пошел прощаться с девочками, а ты все таки сделала свой выбор. Просто знай, что я все также по прежнему тебя люблю. Да, сквозь боль и переживания.
+
+Понимаю конечно, что говорю это все в пустоту. Понимаю что, уже и так все ясно. Но хочу тебе сказать одно. Ты все сама решила и сама захотела расстаться. Я не знаю на эмоциях или ты давно этого хотела уже. У меня в голове не укладывается просто, как человек в один день строит со мной будущее, планирует детей, переезд и клянется в любви, а на следующий день становится абсолютно чужим и подает на развод. Я наивный человек который до сих пор не верит в это и ждет пока ты одумаешься, что ты совершаешь ошибку. Но я прям знаю наперед твою мысль “Я ЕСЛИ СОВЕРШАЮ ОШИБКУ, ТО ЭТО МОЯ ОШИБКА И МНЕ ЗА ЭТО ОТВЕЧАТЬ”. Но я тебе не раз повторял “Дурак учится на своих ошибках, умный на чужих, чтобы их не допускать”. Ты у меня умная. Я это точно знаю. И если ты решила что это наш конец, то это твой осознанный и взвешенный выбор. Глупость конечно, но я хочу чтобы ты знала, если ты все таки подумаешь, что была не права со своим решением и каким то магическим способом до тебя дойдет, что натворила и захочешь все вернуть. Я всегда тебя жду. Но это уже будет не Пасечнюк, которая забила на семью и все разрушила, а Чеснокова Дарья Витальевна, которая уверена в своем выборе мужа и хочет с ним будущего. Которая правда хочет чтобы мы были вместе. Раз и навсегда. Я надеюсь ты понимаешь про что я имею ввиду. Я не ухожу закрыв за собой дверь навсегда. Я просто меняю замок и оставлю тебе ключ для размышления. Да, звучит как бред которому увы никогда не сбыться.
+
+Тяжело признавать конечно, но я проиграл. 
+
+Нужно было всего лишь сесть и вместе поговорить. Не доводить до точки невозврата. Но я чисто физически этого не мог сделать находясь на работе. Ты решила все за нас обоих. Придумала у себя в голове непонятно что и сама же в это начала верить. Может я не прав, я не отрицаю, может где-то чего то недопонимаю. Но в любом случае, чтобы не было таких моментов, нужно было больше разговаривать и идти друг другу на уступки. Я никогда не говорил что ты в чем то плохая. Я тебе говорил, то что меня тревожило. То что мне было неприятно в твоих тех или иных действиях. Всего лишь нужно было прислушиваться друг к другу и не делать специально хуже.
+
+Мы реально с тобой Биба и Боба два долбаеба, которые допустили чтобы так все закончилось и не нашли в нужный момент компромисс.
+
+Я не жалею что в тебя влюбился.
+Я бы влюбился в тебя заново, 
+Ничего не меняя.
+Влюбился бы в тебя заново, 
+Ничуть не сомневаясь.
+Влюбился бы в тебя заново, 
+Даже если бы знал, что будет такой грустный финал.`;
+
+    // ===== РЕНДЕР ПИСЬМА (абзацы/строки) =====
+    const letterEl = document.getElementById("letter");
+    const parts = letterText.split("\n");
+    // убираем самый первый заголовок из текста (мы его уже показали как title)
+    // если хочешь оставить и в письме — закомментируй следующие 2 строки:
+    if(parts[0]?.startsWith("Привет моя любимая жена")) parts.shift();
+
+    parts.forEach(line => {
+      if(line.trim() === ""){
+        const sp = document.createElement("div");
+        sp.className = "spacer";
+        letterEl.appendChild(sp);
+      } else {
+        const p = document.createElement("p");
+        p.className = "line";
+        p.textContent = line;
+        letterEl.appendChild(p);
+      }
+    });
+
+    // ===== АНИМАЦИИ ПОЯВЛЕНИЯ =====
+    const scrollPill = document.getElementById("scrollPill");
+
+    // полароиды
     polaroidEls.forEach((el, i) => setTimeout(()=>el.classList.add("show"), 150 + i*140));
 
-    // Появление текста после фото
+    // показываем подсказку прокрутки после появления первых полароидов
+    setTimeout(() => scrollPill.classList.add("show"), 150 + 6*140);
+
+    // клик по подсказке — плавный скролл вниз к письму (к заголовку)
+    scrollPill.addEventListener("click", () => {
+      document.getElementById("title").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    // скрываем подсказку, если человек уже прокрутил
+    const paper = document.getElementById("paper");
+    function updateHint(){
+      const y = window.scrollY || document.documentElement.scrollTop;
+      if(y > 120) scrollPill.classList.remove("show");
+      else scrollPill.classList.add("show");
+    }
+    window.addEventListener("scroll", updateHint, {passive:true});
+
+    // показываем заголовок и затем строки письма
     const title = document.getElementById("title");
-    const lines = document.querySelectorAll(".line");
-    const seps = document.querySelectorAll("#sep"); // два разделителя
+    const lines = () => Array.from(document.querySelectorAll("#letter .line"));
+    const sep = document.getElementById("sep");
     const cta = document.getElementById("cta");
     const footer = document.getElementById("footer");
 
@@ -446,18 +509,21 @@
 
     setTimeout(()=>title.classList.add("show"), afterPolaroids);
 
-    // ВНИМАНИЕ: текст длинный, поэтому делаем шаг чуть быстрее, чтобы не ждать вечность
-    const step = 130; // скорость появления строк
-    lines.forEach((l,i)=>setTimeout(()=>l.classList.add("show"), afterPolaroids + 420 + i*step));
+    // письмо очень длинное — делаем комфортную скорость
+    const step = 120;
+    const start = afterPolaroids + 420;
 
-    const endTime = afterPolaroids + 420 + lines.length*step + 420;
-    seps.forEach((s, idx) => setTimeout(()=>s.classList.add("show"), endTime + idx*120));
-    setTimeout(()=>cta.classList.add("show"), endTime+260);
+    lines().forEach((l,i)=>setTimeout(()=>l.classList.add("show"), start + i*step));
+
+    const endTime = start + lines().length*step + 420;
+    setTimeout(()=>sep.classList.add("show"), endTime);
+    setTimeout(()=>cta.classList.add("show"), endTime+240);
     setTimeout(()=>{
       footer.classList.add("show");
       document.getElementById("playBtn").classList.add("invite");
-    }, endTime+720);
+    }, endTime+760);
 
+    // ===== КНОПКА ФИЛЬМА =====
     document.getElementById("playBtn").onclick = () => window.open(filmUrl,"_blank");
 
     // ===== ЗВЁЗДЫ =====
@@ -486,7 +552,7 @@
         if(s.y > innerHeight+10) s.y = -10;
 
         const tw = (Math.sin(s.t)+1)*0.5;
-        const alpha = 0.16 + tw*0.34;
+        const alpha = 0.14 + tw*0.34;
 
         ctx.fillStyle = `rgba(255,255,255,${alpha})`;
         ctx.beginPath();
