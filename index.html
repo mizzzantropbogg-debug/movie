@@ -65,23 +65,6 @@
       overflow:hidden;
       position:relative;
     }
-    .topbar{
-      padding:14px 16px;
-      display:flex;
-      justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.40);
-    }
-    .chip{
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      font-size:12.5px;
-      color:rgba(255,255,255,.85);
-      font-family:"Montserrat", sans-serif;
-      letter-spacing:.2px;
-    }
     .content{ padding:20px; }
 
     /* ===== Polaroid grid (10 photos) ===== */
@@ -89,7 +72,7 @@
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 12px;
-      margin: 6px 0 10px;
+      margin: 0 0 10px;
     }
     .polaroid{
       background: rgba(255,255,255,.96);
@@ -175,9 +158,7 @@
     }
     .title.show{ opacity:1; transform:none; }
 
-    .letter{
-      margin-top: 6px;
-    }
+    .letter{ margin-top: 6px; }
 
     .line{
       font-size: 20px;
@@ -316,11 +297,6 @@
 
   <div class="wrap">
     <div class="paper" id="paper">
-      <div class="topbar">
-        <div class="chip">Для тебя</div>
-        <div class="chip">❤️</div>
-      </div>
-
       <div class="content">
         <div class="polaroids" id="polaroids"></div>
 
@@ -333,9 +309,7 @@
 
         <div class="title" id="title">Привет моя любимая жена…</div>
 
-        <div class="letter" id="letter">
-          <!-- JS заполнит строки письма -->
-        </div>
+        <div class="letter" id="letter"></div>
 
         <div class="separator" id="sep"></div>
 
@@ -394,7 +368,7 @@
       polaroidEls.push(card);
     });
 
-    // ===== ТВОЙ ТЕКСТ (вставлен 1-в-1) =====
+    // ===== ТЕКСТ ПИСЬМА =====
     const letterText = `Привет моя любимая жена …
 До сих пор не знаю правильно делаю или нет, что решил все это написать, но будь что будет уже. Явно хуже уже быть и так не может.
 
@@ -455,11 +429,11 @@
 Влюбился бы в тебя заново, 
 Даже если бы знал, что будет такой грустный финал.`;
 
-    // ===== РЕНДЕР ПИСЬМА (абзацы/строки) =====
+    // Рендер письма в DOM
     const letterEl = document.getElementById("letter");
     const parts = letterText.split("\n");
-    // убираем самый первый заголовок из текста (мы его уже показали как title)
-    // если хочешь оставить и в письме — закомментируй следующие 2 строки:
+
+    // убираем первую строку "Привет..." из тела, т.к. она уже в заголовке
     if(parts[0]?.startsWith("Привет моя любимая жена")) parts.shift();
 
     parts.forEach(line => {
@@ -475,22 +449,16 @@
       }
     });
 
-    // ===== АНИМАЦИИ ПОЯВЛЕНИЯ =====
+    // ===== АНИМАЦИИ =====
     const scrollPill = document.getElementById("scrollPill");
 
-    // полароиды
     polaroidEls.forEach((el, i) => setTimeout(()=>el.classList.add("show"), 150 + i*140));
-
-    // показываем подсказку прокрутки после появления первых полароидов
     setTimeout(() => scrollPill.classList.add("show"), 150 + 6*140);
 
-    // клик по подсказке — плавный скролл вниз к письму (к заголовку)
     scrollPill.addEventListener("click", () => {
       document.getElementById("title").scrollIntoView({behavior:"smooth", block:"start"});
     });
 
-    // скрываем подсказку, если человек уже прокрутил
-    const paper = document.getElementById("paper");
     function updateHint(){
       const y = window.scrollY || document.documentElement.scrollTop;
       if(y > 120) scrollPill.classList.remove("show");
@@ -498,7 +466,6 @@
     }
     window.addEventListener("scroll", updateHint, {passive:true});
 
-    // показываем заголовок и затем строки письма
     const title = document.getElementById("title");
     const lines = () => Array.from(document.querySelectorAll("#letter .line"));
     const sep = document.getElementById("sep");
@@ -509,13 +476,12 @@
 
     setTimeout(()=>title.classList.add("show"), afterPolaroids);
 
-    // письмо очень длинное — делаем комфортную скорость
     const step = 120;
     const start = afterPolaroids + 420;
+    const allLines = lines();
+    allLines.forEach((l,i)=>setTimeout(()=>l.classList.add("show"), start + i*step));
 
-    lines().forEach((l,i)=>setTimeout(()=>l.classList.add("show"), start + i*step));
-
-    const endTime = start + lines().length*step + 420;
+    const endTime = start + allLines.length*step + 420;
     setTimeout(()=>sep.classList.add("show"), endTime);
     setTimeout(()=>cta.classList.add("show"), endTime+240);
     setTimeout(()=>{
@@ -523,7 +489,6 @@
       document.getElementById("playBtn").classList.add("invite");
     }, endTime+760);
 
-    // ===== КНОПКА ФИЛЬМА =====
     document.getElementById("playBtn").onclick = () => window.open(filmUrl,"_blank");
 
     // ===== ЗВЁЗДЫ =====
