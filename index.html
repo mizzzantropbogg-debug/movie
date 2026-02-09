@@ -62,53 +62,6 @@
     }
     .content{ padding:22px 20px 18px; }
 
-    /* подсказка прокрутки */
-    .scrollHint{
-      position: sticky;
-      top: 10px;
-      width: 100%;
-      display:flex;
-      justify-content:center;
-      z-index: 5;
-      pointer-events:none;
-      margin-bottom: 10px;
-    }
-    .scrollPill{
-      pointer-events:auto;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.40);
-      box-shadow: 0 12px 26px rgba(0,0,0,.35);
-      color: rgba(255,255,255,.88);
-      font-family:"Montserrat", sans-serif;
-      font-size:12.8px;
-      letter-spacing:.2px;
-      opacity:0;
-      transform: translateY(-6px);
-      transition: opacity .6s ease, transform .6s ease;
-      user-select:none;
-    }
-    .scrollPill.show{ opacity:1; transform: translateY(0); }
-    .arrow{
-      width: 18px; height: 18px;
-      display:inline-block;
-      border-right:2px solid rgba(255,255,255,.85);
-      border-bottom:2px solid rgba(255,255,255,.85);
-      transform: rotate(45deg);
-      margin-bottom: 2px;
-      animation: bounce 1.6s ease-in-out infinite;
-      opacity:.9;
-    }
-    @keyframes bounce{
-      0%,100%{ transform: rotate(45deg) translate(0,0); }
-      50%{ transform: rotate(45deg) translate(2px,2px); }
-    }
-
     .title{
       font-family:"Great Vibes", cursive;
       font-size:clamp(34px,5.4vw,54px);
@@ -283,13 +236,6 @@
   <div class="wrap">
     <div class="paper" id="paper">
       <div class="content">
-        <div class="scrollHint">
-          <div class="scrollPill" id="scrollPill" title="Прокрутить дальше">
-            <span>Прокрути вниз</span>
-            <span class="arrow"></span>
-          </div>
-        </div>
-
         <div class="title" id="title">Привет моя любимая жена…</div>
 
         <div class="letter" id="letter"></div>
@@ -322,15 +268,13 @@
 
     const captions = ["…","…","…","…","…","…","…","…","…","…"];
 
-    // Ротации
     function rot(i){
       const arr = [-3.2, 2.6, -1.8, 3.1, -2.7, 2.1, -1.3, 2.9, -2.2, 2.4];
       return arr[i % arr.length];
     }
 
-    // Текст — ровно твой
+    // Текст (ровно твой)
     const letterText = `Привет моя любимая жена …
-    
 До сих пор не знаю правильно делаю или нет, что решил все это написать, но будь что будет уже. Явно хуже уже быть и так не может.
 
 Все проблемы решаются в кругу семьи. Когда ты не думаешь как сделать хуже, а когда держишься вместе. Мы не зря женились. Для тебя может быть это ничего и не значит судя по всему, но я делал осознанный выбор в пользу тебя. 
@@ -390,13 +334,17 @@
 Влюбился бы в тебя заново, 
 Даже если бы знал, что будет такой грустный финал.`;
 
-    // Абзацы
+    // Разбивка на абзацы
     let paragraphs = letterText.split("\n\n").map(p => p.trim()).filter(Boolean);
 
-    // Заголовок вверху — не дублируем в письме
-    if (paragraphs[0]?.startsWith("Привет моя любимая жена")) paragraphs.shift();
+    // ВАЖНО: удаляем только первую строку "Привет..." из первого абзаца,
+    // но оставляем "До сих пор..." в письме
+    if (paragraphs.length > 0 && paragraphs[0].startsWith("Привет моя любимая жена")) {
+      paragraphs[0] = paragraphs[0].replace(/^Привет моя любимая жена …\s*\n?/, "").trim();
+      if (!paragraphs[0]) paragraphs.shift();
+    }
 
-    // Фото-вставки: 7 вставок = 10 фото, и дальше НИЧЕГО (в конце фото НЕ добавляем)
+    // Фото-вставки (ровно 10 фото в середину), без добавлений в конце
     const photoLayout = [1,2,1,2,1,2,1]; // сумма = 10
     let photoIndex = 0;
 
@@ -420,7 +368,6 @@
       block.className = `photoBlock ${count === 1 ? "one" : "two"}`;
 
       for(let i=0;i<count;i++){
-        // если вдруг фото меньше — просто выходим, без добавления в конец
         if(photoIndex >= photos.length) break;
 
         const card = document.createElement("div");
@@ -448,51 +395,33 @@
       letterEl.appendChild(sp);
     }
 
-    // Распределяем фото по тексту так, чтобы в конце НЕ было фото:
-    // вставки делаем после выбранных абзацев (равномерно), но НЕ после последнего.
+    // где вставлять фото: равномерно, но НЕ в конце (не после последнего абзаца)
     const insertCount = photoLayout.length;
-
-    // индексы абзацев, после которых вставим фото
     const insertAfter = [];
-    // берем равномерно по длине, но не ставим после последнего
     for(let i=1;i<=insertCount;i++){
       const idx = Math.floor(i * paragraphs.length / (insertCount + 1));
-      insertAfter.push(Math.min(idx, paragraphs.length - 2)); // не последний абзац
+      insertAfter.push(Math.min(idx, paragraphs.length - 2));
     }
 
-    // проходим абзацы и вставляем фото по плану
     let ins = 0;
     for(let i=0;i<paragraphs.length;i++){
       addTextBlock(paragraphs[i]);
-
       if(ins < insertCount && i === insertAfter[ins]){
         addPhotoBlock(photoLayout[ins]);
         ins++;
       }
     }
 
-    // ВАЖНО: фото в конце НЕ добавляем, даже если что-то осталось
-    // (у нас layout=10 фото, и оно встанет в середину)
-
-    // ===== Анимации появления =====
-    const scrollPill = document.getElementById("scrollPill");
+    // ===== Анимации =====
     const title = document.getElementById("title");
     const sep = document.getElementById("sep");
     const cta = document.getElementById("cta");
     const footer = document.getElementById("footer");
 
-    setTimeout(() => scrollPill.classList.add("show"), 500);
-    scrollPill.addEventListener("click", () => window.scrollTo({ top: 260, behavior: "smooth" }));
-    window.addEventListener("scroll", () => {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      if(y > 120) scrollPill.classList.remove("show");
-      else scrollPill.classList.add("show");
-    }, {passive:true});
+    setTimeout(()=>title.classList.add("show"), 450);
 
-    setTimeout(()=>title.classList.add("show"), 600);
-
-    const revealEls = Array.from(document.querySelectorAll("#letter .line, #letter .photoBlock"))
-    let t = 900, step = 120;
+    const revealEls = Array.from(document.querySelectorAll("#letter .line, #letter .photoBlock"));
+    let t = 750, step = 120;
     revealEls.forEach(el=>{
       setTimeout(()=>el.classList.add("show"), t);
       t += step;
